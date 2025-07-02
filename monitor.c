@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// checks if someone was hungry for too long
 static int	philo_has_died(t_philo *philo)
 {
 	long	time_now;
@@ -23,6 +24,7 @@ static int	philo_has_died(t_philo *philo)
 	return (0);
 }
 
+// calls 911 reaaally quick, trust me.
 static void	report_death(t_philo *philo)
 {
 	t_table	*table;
@@ -37,6 +39,7 @@ static void	report_death(t_philo *philo)
 	pthread_mutex_unlock(&table->msg_lock);
 }
 
+// stares at each philosopher and checks pulse
 static int	check_each_philo(t_philo *philos)
 {
 	unsigned int	i;
@@ -59,6 +62,7 @@ static int	check_each_philo(t_philo *philos)
 	return (0);
 }
 
+// weird looking dude, looking at everyone from far
 void	*monitor(void *arg)
 {
 	t_philo *philos;

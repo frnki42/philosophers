@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// inits philo struct
 void	init_philo_zero(t_philo *philo, unsigned int index)
 {
 	philo[index].fork_left = NULL;
@@ -22,6 +23,7 @@ void	init_philo_zero(t_philo *philo, unsigned int index)
 	philo[index].t_last = 0;
 }
 
+// sets forks, table and num for philo
 void	set_philo(t_philo *philo, t_table *table, unsigned int index)
 {
 	philo[index].fork_left = &table->forks[index];
@@ -33,6 +35,7 @@ void	set_philo(t_philo *philo, t_table *table, unsigned int index)
 	philo[index].num = index + 1;
 }
 
+// inits and sets philo (+mutex)
 void	create_philo(t_philo *philo, t_table *table, unsigned int index)
 {
 	init_philo_zero(philo, index);
@@ -43,6 +46,7 @@ void	create_philo(t_philo *philo, t_table *table, unsigned int index)
 	pthread_mutex_init(philo[index].meal_lock, NULL);
 }
 
+// sets up all philos
 void	init_philo(t_table *table, t_philo *philo)
 {
 	unsigned int	index;

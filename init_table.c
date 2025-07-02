@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// inits table struct
 void	init_table_zero(t_table *table)
 {
 	table->forks = NULL;
@@ -23,6 +24,7 @@ void	init_table_zero(t_table *table)
 	table->t_start = 0;
 }
 
+// creates mutexes .. yep!
 void	create_mutexes(t_table *table)
 {
 	unsigned int	i;
@@ -48,6 +50,7 @@ void	create_mutexes(t_table *table)
 	}
 }
 
+// allocates forks and calls create_mutexes() to .. well, you already know
 int	init_forks(t_table *table)
 {
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_of_phil);
@@ -60,6 +63,8 @@ int	init_forks(t_table *table)
 	return (0);
 }
 
+
+// parses arguments and prepares table
 int	init_table(int argc, char **argv, t_table *table)
 {
 	init_table_zero(table);

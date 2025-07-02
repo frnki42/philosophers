@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// starts the stopwatch
 int	set_t_start(t_table *table, t_philo *philo)
 {
 	table->t_start = check_time();
@@ -24,6 +25,7 @@ int	set_t_start(t_table *table, t_philo *philo)
 	return (0);
 }
 
+// counts todays contestants
 static int	set_num_of_phil(t_table *table, char *arg)
 {
 	long	tmp;
@@ -39,6 +41,7 @@ static int	set_num_of_phil(t_table *table, char *arg)
 	return (0);
 }
 
+// that's the bouncer - if you are too young, you will get rejected 
 static int	set_long(long *time, char *arg)
 {
 	*time = ft_atolong(arg);
@@ -51,6 +54,7 @@ static int	set_long(long *time, char *arg)
 	return (0);
 }
 
+// populates table
 int	set_table(int argc, char **argv, t_table *table)
 {
 	if (set_num_of_phil(table, argv[1]) || set_long(&table->t_die, argv[2]))

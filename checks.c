@@ -11,20 +11,20 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// checks if all philos ate the required amount
 int	all_philos_ate(t_table *table, t_philo *philos)
 {
 	unsigned int	i;
 	unsigned int	finished;
 
 	finished = 0;
-	i = 0;
-	while (i < table->num_of_phil)
+	i = -1;
+	while (++i < table->num_of_phil)
 	{
 		pthread_mutex_lock(philos[i].meal_lock);
 		if (philos[i].ate >= table->must_eat)
 			finished++;
 		pthread_mutex_unlock(philos[i].meal_lock);
-		i++;
 	}
 	if (finished == table->num_of_phil)
 		return (1);
@@ -39,7 +39,7 @@ static int	check_char(int c)
 	return (0);
 }
 
-// check if string is valid (digit with only one sign if any)
+// checks if string is valid (digit with only one sign if any)
 static int	check_str(char *str)
 {
 	if (!*str)

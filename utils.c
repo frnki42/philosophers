@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// prints time + message and handles msg_lock
 void	print_status(t_philo *philo, char *msg)
 {
 	long	timestamp;
@@ -60,6 +61,8 @@ void	destroy_table(t_table *table)
 	pthread_mutex_destroy(&table->alive_lock);
 }
 
+
+// frees and destroys all meal_lock
 void	destroy_philos(t_philo *philo, unsigned int num_of_phil)
 {
 	unsigned int	i;

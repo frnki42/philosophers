@@ -65,5 +65,6 @@ void	print_status(t_philo *philo, char *msg);
 void	destroy_philos(t_philo *philo, unsigned int num_of_phil);
 int	all_philos_ate(t_table *table, t_philo *philos);
 void	*monitor(void *arg);
+void	precision_timer(long duration);
 // macros
 #endif

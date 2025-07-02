@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-static void	precision_timer(long duration)
+// ngl, this is the coolest part in this project
+void	precision_timer(long duration)
 {
 	long	timestamp;
 
@@ -20,6 +21,7 @@ static void	precision_timer(long duration)
 		usleep(1000);
 }
 
+// fork dispenser
 static void	eat_spaghetti(t_philo *philo)
 {
 	if (philo->num % 2 == 0)
@@ -46,6 +48,7 @@ static void	eat_spaghetti(t_philo *philo)
 	pthread_mutex_unlock(philo->fork_right);
 }
 
+// philos 9-5
 void	*start_routine(void *arg)
 {
 	t_philo	*philo;
@@ -55,6 +58,9 @@ void	*start_routine(void *arg)
 		usleep(1000);
 	while (philo->table->all_alive)
 	{
+		if (philo->table->must_eat > 0
+			&& philo->ate >= philo->table->must_eat)
+			break;
 		eat_spaghetti(philo);
 		print_status(philo, "is sleeping");
 		precision_timer(philo->table->t_sleep);
