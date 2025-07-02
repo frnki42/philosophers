@@ -38,6 +38,7 @@ int	create_thread(t_philo *philo, t_table *table, unsigned int i)
 int	create_threads(t_philo *philo, t_table *table)
 {
 	unsigned int	i;
+	pthread_t	monitor_thread;
 
 	i = 0;
 	while (i < table->num_of_phil && table->all_alive)
@@ -45,5 +46,11 @@ int	create_threads(t_philo *philo, t_table *table)
 		if (create_thread(philo, table, i++))
 			return (1);
 	}
+	if (pthread_create(&monitor_thread, NULL, monitor, philo))
+	{
+		printf("# error creating monitor thread.\n");
+		return (1);
+	}
+	pthread_detach(monitor_thread);
 	return (0);
 }

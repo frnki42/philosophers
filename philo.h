@@ -3,9 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: .frnki   <frnki@42.fr>                     +#+  +:+       +#+        */
+/*   By: .frnki   <frnki@frnki.dev>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/18 16:20:42 by .frnki            #+#    #+#             */
+/*   Created: 2025/02/18 04:20:42 by .frnki            #+#    #+#             */
 /*   Updated: 2025/05/21 16:42:20 by .frnki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -26,39 +26,44 @@ typedef struct s_table
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	msg_lock;
 	pthread_mutex_t	alive_lock;
-	long			must_eat;
+	long		must_eat;
 	unsigned int	all_alive;
 	unsigned int	num_of_phil;
-	long			t_die;
-	long			t_eat;
-	long			t_sleep;
-	long			t_start;
+	long		t_die;
+	long		t_eat;
+	long		t_sleep;
+	long		t_start;
 }	t_table;
 
 typedef struct s_philo
 {
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
-	t_table			*table;
+	pthread_mutex_t *meal_lock;
+	t_table		*table;
 	unsigned int	ate;
 	unsigned int	num;
-	pthread_t		thread;
-	long			t_last;
+	pthread_t	thread;
+	long		t_last;
 }	t_philo;
 // prototypes
-int		check_args(int argc, char **argv);
+int	check_args(int argc, char **argv);
 long	check_time(void);
-int		create_threads(t_philo *philo, t_table *table);
+int	create_threads(t_philo *philo, t_table *table);
 void	destroy_table(t_table *table);
 long	ft_atolong(char *str);
 void	init_philo(t_table *table, t_philo *philo);
-int		init_table(int argc, char **argv, t_table *table);
+int	init_table(int argc, char **argv, t_table *table);
 void	join_threads(t_table *table, t_philo *philo);
 void	put_down_forks(t_philo *philo);
 void	pick_up_forks(t_philo *philo);
-int		set_t_start(t_table *table, t_philo *philo);
-int		set_table(int argc, char **argv, t_table *table);
+int	set_t_start(t_table *table, t_philo *philo);
+int	set_table(int argc, char **argv, t_table *table);
 void	solo_adventure(t_philo *philo);
 void	*start_routine(void *arg);
+void	print_status(t_philo *philo, char *msg);
+void	destroy_philos(t_philo *philo, unsigned int num_of_phil);
+int	all_philos_ate(t_table *table, t_philo *philos);
+void	*monitor(void *arg);
 // macros
 #endif

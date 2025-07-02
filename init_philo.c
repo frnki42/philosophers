@@ -37,6 +37,10 @@ void	create_philo(t_philo *philo, t_table *table, unsigned int index)
 {
 	init_philo_zero(philo, index);
 	set_philo(philo, table, index);
+	philo[index].meal_lock = malloc(sizeof(pthread_mutex_t));
+	if (!philo[index].meal_lock)
+		return;
+	pthread_mutex_init(philo[index].meal_lock, NULL);
 }
 
 void	init_philo(t_table *table, t_philo *philo)

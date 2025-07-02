@@ -3,13 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: .frnki   <frnki@42.fr>                     +#+  +:+       +#+        */
+/*   By: .frnki   <frnki@frnki.dev>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 16:20:42 by .frnki            #+#    #+#             */
+/*   Created: 2025/02/20 04:20:42 by .frnki            #+#    #+#             */
 /*   Updated: 2025/04/20 16:20:42 by .frnki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "philo.h"
+
+int	all_philos_ate(t_table *table, t_philo *philos)
+{
+	unsigned int	i;
+	unsigned int	finished;
+
+	finished = 0;
+	i = 0;
+	while (i < table->num_of_phil)
+	{
+		pthread_mutex_lock(philos[i].meal_lock);
+		if (philos[i].ate >= table->must_eat)
+			finished++;
+		pthread_mutex_unlock(philos[i].meal_lock);
+		i++;
+	}
+	if (finished == table->num_of_phil)
+		return (1);
+	return (0);
+}
 
 // checks if int is in ascii range for digits
 static int	check_char(int c)

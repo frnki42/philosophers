@@ -24,7 +24,7 @@ NAME			= philo
 # LIBRARIES
 # SRC- & OBJ-FILES
 PHILO_SOURCE 	= checks.c handle_forks.c init_philo.c init_table.c philo.c \
-				  routine.c set_table.c threads.c utils.c
+		  routine.c set_table.c threads.c utils.c monitor.c
 PHILO_OBJECT 	= ${PHILO_SOURCE:.c=.o}
 
 # TARGETS

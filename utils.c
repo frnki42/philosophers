@@ -3,13 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: .frnki   <frnki@42.fr>                     +#+  +:+       +#+        */
+/*   By: .frnki   <frnki@frnki.dev>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 16:20:42 by .frnki            #+#    #+#             */
+/*   Created: 2025/04/20 04:20:42 by .frnki            #+#    #+#             */
 /*   Updated: 2025/05/21 16:20:42 by .frnki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "philo.h"
+
+void	print_status(t_philo *philo, char *msg)
+{
+	long	timestamp;
+
+	pthread_mutex_lock(&philo->table->msg_lock);
+	if (philo->table->all_alive)
+	{
+		timestamp = check_time() - philo->table->t_start;
+		printf("%li %i %s\n", timestamp, philo->num, msg);
+	}
+	pthread_mutex_unlock(&philo->table->msg_lock);
+}
 
 // converts string to long
 long	ft_atolong(char *str)
@@ -45,6 +58,18 @@ void	destroy_table(t_table *table)
 		free(table->forks);
 	pthread_mutex_destroy(&table->msg_lock);
 	pthread_mutex_destroy(&table->alive_lock);
+}
+
+void	destroy_philos(t_philo *philo, unsigned int num_of_phil)
+{
+	unsigned int	i;
+
+	i = -1;
+	while (++i < num_of_phil)
+	{
+		pthread_mutex_destroy(philo[i].meal_lock);
+		free(philo[i].meal_lock);
+	}
 }
 
 // starts a funny starving adventure
