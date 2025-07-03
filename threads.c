@@ -31,7 +31,7 @@ int	create_thread(t_philo *philo, t_table *table, unsigned int i)
 		printf("# error creating thread. cleaning up & exiting..\n");
 		pthread_mutex_lock(&philo->table->alive_lock);
 		table->all_alive = 0;
-		pthread_mutex_lock(&philo->table->alive_lock);
+		pthread_mutex_unlock(&philo->table->alive_lock);
 		j = 0;
 		while (j < i)
 			pthread_join(philo[j++].thread, NULL);
