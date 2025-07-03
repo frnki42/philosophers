@@ -51,6 +51,4 @@ void	put_down_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->fork_left);
 	pthread_mutex_unlock(philo->fork_right);
-	pthread_mutex_lock(&philo->table->msg_lock);
-	print_status(philo, "is sleeping");
 }
