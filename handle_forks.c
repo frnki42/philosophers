@@ -18,6 +18,8 @@ void	pick_left_first(t_philo *philo)
 
 	pthread_mutex_lock(philo->fork_left);
 	pthread_mutex_lock(philo->fork_right);
+	if (!philo->table->all_alive)
+		return (put_down_forks(philo));
 	pthread_mutex_lock(&philo->table->msg_lock);
 	if (philo->table->all_alive)
 	{
@@ -36,13 +38,17 @@ void	pick_right_first(t_philo *philo)
 
 	pthread_mutex_lock(philo->fork_right);
 	pthread_mutex_lock(philo->fork_left);
+	if (!philo->table->all_alive)
+		return (put_down_forks(philo));
 	pthread_mutex_lock(&philo->table->msg_lock);
 	if (philo->table->all_alive)
 	{
 		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i has taken a fork (right)\n", timestamp, philo->num);
+		printf("%li %i has taken a fork (right)\n",
+			timestamp, philo->num);
 		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i has taken a fork (left)\n", timestamp, philo->num);
+		printf("%li %i has taken a fork (left)\n",
+			timestamp, philo->num);
 	}
 	pthread_mutex_unlock(&philo->table->msg_lock);
 }

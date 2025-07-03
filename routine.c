@@ -24,28 +24,16 @@ void	precision_timer(long duration)
 // fork dispenser
 static void	eat_spaghetti(t_philo *philo)
 {
-	if (philo->num % 2 == 0)
-	{
-		pthread_mutex_lock(philo->fork_right);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(philo->fork_left);
-		print_status(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->fork_left);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(philo->fork_right);
-		print_status(philo, "has taken a fork");
-	}
+	pick_up_forks(philo);
+	if (!philo->table->all_alive)
+		return ;
 	print_status(philo, "is eating");
 	pthread_mutex_lock(philo->meal_lock);
 	philo->t_last = check_time();
 	philo->ate++;
 	pthread_mutex_unlock(philo->meal_lock);
 	precision_timer(philo->table->t_eat);
-	pthread_mutex_unlock(philo->fork_left);
-	pthread_mutex_unlock(philo->fork_right);
+	put_down_forks(philo);
 }
 
 // philos 9-5
@@ -62,6 +50,8 @@ void	*start_routine(void *arg)
 			&& philo->ate >= philo->table->must_eat)
 			break;
 		eat_spaghetti(philo);
+		if (!philo->table->all_alive)
+			break;
 		print_status(philo, "is sleeping");
 		precision_timer(philo->table->t_sleep);
 		print_status(philo, "is thinking");
