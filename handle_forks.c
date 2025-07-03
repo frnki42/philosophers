@@ -15,30 +15,26 @@
 void	pick_left_first(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_left);
+	print_status(philo, "has taken a fork");
 	if (!philo->table->all_alive)
 		return ((void)pthread_mutex_unlock(philo->fork_left));
-	if (philo->table->all_alive)
-		print_status(philo, "has taken a fork");
 	pthread_mutex_lock(philo->fork_right);
-	pthread_mutex_lock(&philo->table->msg_lock);
-	pthread_mutex_unlock(&philo->table->msg_lock);
+	print_status(philo, "has taken a fork");
 }
 
 // lock fork_right before locking fork_left
 void	pick_right_first(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_right);
+	print_status(philo, "has taken a fork");
 	if (!philo->table->all_alive)
 	{
 		pthread_mutex_unlock(philo->fork_left);
 		pthread_mutex_unlock(philo->fork_right);
 		return ;
 	}
-	if (philo->table->all_alive)
-		print_status(philo, "has taken a fork");
 	pthread_mutex_lock(philo->fork_left);
-	pthread_mutex_lock(&philo->table->msg_lock);
-	pthread_mutex_unlock(&philo->table->msg_lock);
+	print_status(philo, "has taken a fork");
 }
 
 // lock and unlock mutexes for fork_left, fork_right
@@ -53,15 +49,8 @@ void	pick_up_forks(t_philo *philo)
 // put forks down
 void	put_down_forks(t_philo *philo)
 {
-	long	timestamp;
-
 	pthread_mutex_unlock(philo->fork_left);
 	pthread_mutex_unlock(philo->fork_right);
 	pthread_mutex_lock(&philo->table->msg_lock);
-	if (philo->table->all_alive)
-	{
-		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i is sleeping\n", timestamp, philo->num);
-	}
-	pthread_mutex_unlock(&philo->table->msg_lock);
+	print_status(philo, "is sleeping");
 }
