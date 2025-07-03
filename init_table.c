@@ -30,24 +30,19 @@ int	init_mutexes(t_table *table)
 {
 	unsigned int	i;
 
-	i = 0;
-	while (i < table->num_of_phil)
+	i = -1;
+	while (++i < table->num_of_phil)
 	{
-		if (pthread_mutex_init(&table->forks[i++], NULL))
-		{
-			printf("# pthread_mutex_init failed!\n");
-			destroy_table(table);
-			return (1);
-		}
-		if (pthread_mutex_init(&table->state_locks[i], NULL))
+		if (pthread_mutex_init(&table->forks[i], NULL)
+			|| pthread_mutex_init(&table->state_locks[i], NULL))
 		{
 			printf("# pthread_mutex_init failed!\n");
 			destroy_table(table);
 			return (1);
 		}
 	}
-	if (pthread_mutex_init(&table->msg_lock, NULL) ||
-		pthread_mutex_init(&table->alive_lock, NULL))
+	if (pthread_mutex_init(&table->msg_lock, NULL)
+		|| pthread_mutex_init(&table->alive_lock, NULL))
 	{
 		printf("# pthread_mutex_init failed!\n");
 		destroy_table(table);

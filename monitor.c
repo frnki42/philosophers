@@ -59,7 +59,12 @@ void	*monitor(void *arg)
 				return (report_death(&philo[i]), NULL);
 		}
 		if (table->must_eat > 0 && all_philos_ate(table, philo))
+		{
+			pthread_mutex_lock(&table->msg_lock);
+			table->all_alive = 0;
+			pthread_mutex_lock_unlock(&table->msg_lock);
 			return (NULL);
+		}
 		usleep(1000);
 	}
 	return (NULL);
