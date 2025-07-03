@@ -73,6 +73,7 @@ void	destroy_philos(t_philo *philo, unsigned int num_of_phil)
 		{
 			pthread_mutex_destroy(philo[i].meal_lock);
 			free(philo[i].meal_lock);
+			philo[i].meal_lock = NULL;
 		}
 	}
 }

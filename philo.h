@@ -19,6 +19,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 // custom header
+// macros
 // typedef & structs
 
 typedef struct s_table
@@ -66,5 +67,6 @@ int	set_t_start(t_table *table, t_philo *philo);
 int	set_table(int argc, char **argv, t_table *table);
 void	solo_adventure(t_philo *philo);
 void	*start_routine(void *arg);
-// macros
+int	init_mutexes(t_table *table);
+
 #endif

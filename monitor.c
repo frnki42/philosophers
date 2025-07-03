@@ -17,8 +17,10 @@ static int	philo_has_died(t_philo *philo)
 	long	time_now;
 	long	time_last_meal;
 
+	pthread_mutex_lock(philo->meal_lock);
 	time_now = check_time();
 	time_last_meal = time_now - philo->t_last;
+	pthread_mutex_unlock(philo->meal_lock);
 	if (time_last_meal > philo->table->t_die)
 		return (1);
 	return (0);
@@ -39,43 +41,25 @@ static void	report_death(t_philo *philo)
 	pthread_mutex_unlock(&table->msg_lock);
 }
 
-// stares at each philosopher and checks pulse
-static int	check_each_philo(t_philo *philos)
-{
-	unsigned int	i;
-	t_table		*table;
-
-	table = philos[0].table;
-	i = 0;
-	while (i < table->num_of_phil)
-	{
-		pthread_mutex_lock(philos[i].meal_lock);
-		if (philo_has_died(&philos[i]))
-		{
-			pthread_mutex_unlock(philos[i].meal_lock);
-			report_death(&philos[i]);
-			return (1);
-		}
-		pthread_mutex_unlock(philos[i].meal_lock);
-		i++;
-	}
-	return (0);
-}
-
 // weird looking dude, looking at everyone from far
 void	*monitor(void *arg)
 {
-	t_philo *philos;
-	t_table	*table;
+	unsigned int	i;
+	t_table		*table;
+	t_philo		*philo;
 
-	philos = (t_philo *)arg;
-	table = philos[0].table;
-	while (table->all_alive)
+	philo = (t_philo *)arg;
+	table = philo[0].table;
+	while (1)
 	{
-		if (check_each_philo(philos))
-			break ;
-		if (table->must_eat > 0 && all_philos_ate(table, philos))
-			break ;
+		i = -1;
+		while (++i < table->num_of_phil)
+		{
+			if (philo_has_died(&philo[i]))
+				return (report_death(&philo[i]), NULL);
+		}
+		if (table->must_eat > 0 && all_philos_ate(table, philo))
+			return (NULL);
 		usleep(1000);
 	}
 	return (NULL);

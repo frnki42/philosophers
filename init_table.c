@@ -25,7 +25,7 @@ void	init_table_zero(t_table *table)
 }
 
 // creates mutexes .. yep!
-int	create_mutexes(t_table *table)
+int	init_mutexes(t_table *table)
 {
 	unsigned int	i;
 
@@ -63,7 +63,7 @@ int	init_forks(t_table *table)
 		printf("# malloc failed!\n");
 		return (1);
 	}
-	if (create_mutexes(table))
+	if (init_mutexes(table))
 		return (1);
 	return (0);
 }

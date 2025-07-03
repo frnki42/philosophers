@@ -55,7 +55,7 @@ static int	set_long(long *time, char *arg)
 	return (0);
 }
 
-// populates table
+// sets t_die, t_eat, t_sleep and num_of_phil
 int	set_table(int argc, char **argv, t_table *table)
 {
 	if (set_num_of_phil(table, argv[1]) || set_long(&table->t_die, argv[2]))
