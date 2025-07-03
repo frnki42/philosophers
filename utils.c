@@ -17,11 +17,13 @@ void	print_status(t_philo *philo, char *msg)
 	long	timestamp;
 
 	pthread_mutex_lock(&philo->table->msg_lock);
+	pthread_mutex_lock(&philo->table->alive_lock);
 	if (philo->table->all_alive)
 	{
 		timestamp = check_time() - philo->table->t_start;
 		printf("%li %i %s\n", timestamp, philo->num, msg);
 	}
+	pthread_mutex_unlock(&philo->table->alive_lock);
 	pthread_mutex_unlock(&philo->table->msg_lock);
 }
 

@@ -33,11 +33,13 @@ static void	report_death(t_philo *philo)
 
 	table = philo->table;
 	pthread_mutex_lock(&table->msg_lock);
+	pthread_mutex_lock(&table->alive_lock);
 	if (table->all_alive)
 	{
 		table->all_alive = 0;
 		printf("%ld %d died\n", check_time() - table->t_start, philo->num);
 	}
+	pthread_mutex_unlock(&table->alive_lock);
 	pthread_mutex_unlock(&table->msg_lock);
 }
 

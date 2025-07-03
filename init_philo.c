@@ -51,18 +51,28 @@ int	init_philo(t_table *table, t_philo *philo)
 	unsigned int	index;
 
 	index = 0;
-	while (index < table->num_of_phil && table->all_alive)
+	while (index < table->num_of_phil)
 	{
+		pthread_mutex_lock(&table->alive_lock);
+		if (!table->all_alive)
+		{
+			pthread_mutex_unlock(&table->alive_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&table->alive_lock);
 		if (create_philo(philo, table, index++))
 		{
 			destroy_philos(philo, index);
 			return (1);
 		}
 	}
+	pthread_mutex_lock(&table->alive_lock);
 	if (!table->all_alive)
 	{
+		pthread_mutex_unlock(&table->alive_lock);
 		destroy_philos(philo, index);
 		return (1);
 	}
+	pthread_mutex_unlock(&table->alive_lock);
 	return (0);
 }

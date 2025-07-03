@@ -16,8 +16,14 @@ void	pick_left_first(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_left);
 	print_status(philo, "has taken a fork");
+	pthread_mutex_lock(&philo->table->alive_lock);
 	if (!philo->table->all_alive)
-		return ((void)pthread_mutex_unlock(philo->fork_left));
+	{
+		pthread_mutex_unlock(&philo->table->alive_lock);
+		pthread_mutex_unlock(philo->fork_left);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->table->alive_lock);
 	pthread_mutex_lock(philo->fork_right);
 	print_status(philo, "has taken a fork");
 }
@@ -27,12 +33,14 @@ void	pick_right_first(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_right);
 	print_status(philo, "has taken a fork");
+	pthread_mutex_lock(&philo->table->alive_lock);
 	if (!philo->table->all_alive)
 	{
-		pthread_mutex_unlock(philo->fork_left);
+		pthread_mutex_unlock(&philo->table->alive_lock);
 		pthread_mutex_unlock(philo->fork_right);
 		return ;
 	}
+	pthread_mutex_unlock(&philo->table->alive_lock);
 	pthread_mutex_lock(philo->fork_left);
 	print_status(philo, "has taken a fork");
 }
