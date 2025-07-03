@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-// hello world!
 int	main(int argc, char **argv)
 {
 	unsigned int	i;
@@ -23,7 +22,8 @@ int	main(int argc, char **argv)
 	philo = malloc(sizeof(t_philo) * table.num_of_phil);
 	if (!philo)
 		return (destroy_table(&table), 1);
-	init_philo(&table, philo);
+	if (init_philo(&table, philo))
+			return (destroy_table(&table), free(philo), 1);
 	if (set_t_start(&table, philo))
 		return (1);
 	i = 0;

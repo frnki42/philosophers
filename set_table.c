@@ -18,6 +18,7 @@ int	set_t_start(t_table *table, t_philo *philo)
 	if (table->t_start == -1)
 	{
 		printf("# gettimeofday() failed. cleaning up & exit.\n");
+		destroy_philos(philo, table->num_of_phil);
 		destroy_table(table);
 		free(philo);
 		return (1);

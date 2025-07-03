@@ -61,7 +61,6 @@ void	destroy_table(t_table *table)
 	pthread_mutex_destroy(&table->alive_lock);
 }
 
-
 // frees and destroys all meal_lock
 void	destroy_philos(t_philo *philo, unsigned int num_of_phil)
 {
@@ -70,8 +69,11 @@ void	destroy_philos(t_philo *philo, unsigned int num_of_phil)
 	i = -1;
 	while (++i < num_of_phil)
 	{
-		pthread_mutex_destroy(philo[i].meal_lock);
-		free(philo[i].meal_lock);
+		if (philo[i].meal_lock)
+		{
+			pthread_mutex_destroy(philo[i].meal_lock);
+			free(philo[i].meal_lock);
+		}
 	}
 }
 

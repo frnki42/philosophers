@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: .frnki <frnki@42.fr>                       +#+  +:+       +#+         #
+#    By: .frnki <frnki@frnki.dev>                   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/18 16:20:42 by .frnki            #+#    #+#              #
 #    Updated: 2025/05/21 16:30:44 by .frnki           ###   ########.fr        #
@@ -15,7 +15,7 @@ BLACK_ON_G		= \033[42;30m
 COLOR_OFF		= \033[0m
 
 # COMPILER
-CC				= cc
+CC			= cc
 CFLAGS 			= -Wall -Wextra -Werror
 
 # VARIABLES
@@ -31,7 +31,7 @@ PHILO_OBJECT 	= ${PHILO_SOURCE:.c=.o}
 all: $(NAME)
 
 $(NAME): $(PHILO_OBJECT)
-	@ $(CC) $(CFLAGS) $(PHILO_OBJECT) -o $(NAME)
+	@ $(CC) $(CFLAGS) $(PHILO_OBJECT) -o $(NAME) -pthread
 	@echo "$(BLACK_ON_G)#######################################$(COLOR_OFF)"
 	@echo "$(BLACK_ON_G)#        PHILO COMPILED       .frnki  #$(COLOR_OFF)"
 	@echo "$(BLACK_ON_G)#######################################$(COLOR_OFF)"

@@ -16,6 +16,7 @@ void	init_philo_zero(t_philo *philo, unsigned int index)
 {
 	philo[index].fork_left = NULL;
 	philo[index].fork_right = NULL;
+	philo[index].meal_lock = NULL;
 	philo[index].table = NULL;
 	philo[index].ate = 0;
 	philo[index].num = 0;
@@ -36,22 +37,38 @@ void	set_philo(t_philo *philo, t_table *table, unsigned int index)
 }
 
 // inits and sets philo (+mutex)
-void	create_philo(t_philo *philo, t_table *table, unsigned int index)
+int	create_philo(t_philo *philo, t_table *table, unsigned int index)
 {
 	init_philo_zero(philo, index);
 	set_philo(philo, table, index);
 	philo[index].meal_lock = malloc(sizeof(pthread_mutex_t));
 	if (!philo[index].meal_lock)
-		return;
+	{
+		printf("# malloc failed!\n");
+		return (1);
+	}
 	pthread_mutex_init(philo[index].meal_lock, NULL);
+	return (0);
 }
 
 // sets up all philos
-void	init_philo(t_table *table, t_philo *philo)
+int	init_philo(t_table *table, t_philo *philo)
 {
 	unsigned int	index;
 
 	index = 0;
 	while (index < table->num_of_phil && table->all_alive)
-		create_philo(philo, table, index++);
+	{
+		if (create_philo(philo, table, index++))
+		{
+			destroy_philos(philo, index);
+			return (1);
+		}
+	}
+	if (!table->all_alive)
+	{
+		destroy_philos(philo, index);
+		return (1);
+	}
+	return (0);
 }

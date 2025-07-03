@@ -25,7 +25,7 @@ void	init_table_zero(t_table *table)
 }
 
 // creates mutexes .. yep!
-void	create_mutexes(t_table *table)
+int	create_mutexes(t_table *table)
 {
 	unsigned int	i;
 
@@ -36,18 +36,22 @@ void	create_mutexes(t_table *table)
 		{
 			printf("# pthread_mutex_init failed!\n");
 			destroy_table(table);
+			return (1);
 		}
 	}
 	if (pthread_mutex_init(&table->msg_lock, NULL))
 	{
 		printf("# pthread_mutex_init failed!\n");
 		destroy_table(table);
+		return (1);
 	}
 	if (pthread_mutex_init(&table->alive_lock, NULL))
 	{
 		printf("# pthread_mutex_init failed!\n");
 		destroy_table(table);
+		return (1);
 	}
+	return (0);
 }
 
 // allocates forks and calls create_mutexes() to .. well, you already know
@@ -59,7 +63,8 @@ int	init_forks(t_table *table)
 		printf("# malloc failed!\n");
 		return (1);
 	}
-	create_mutexes(table);
+	if (create_mutexes(table))
+		return (1);
 	return (0);
 }
 

@@ -47,24 +47,24 @@ typedef struct s_philo
 	long		t_last;
 }	t_philo;
 // prototypes
+int	all_philos_ate(t_table *table, t_philo *philos);
 int	check_args(int argc, char **argv);
 long	check_time(void);
 int	create_threads(t_philo *philo, t_table *table);
+void	destroy_philos(t_philo *philo, unsigned int num_of_phil);
 void	destroy_table(t_table *table);
 long	ft_atolong(char *str);
-void	init_philo(t_table *table, t_philo *philo);
+int	init_philo(t_table *table, t_philo *philo);
 int	init_table(int argc, char **argv, t_table *table);
 void	join_threads(t_table *table, t_philo *philo);
-void	put_down_forks(t_philo *philo);
+void	*monitor(void *arg);
 void	pick_up_forks(t_philo *philo);
+void	precision_timer(long duration);
+void	print_status(t_philo *philo, char *msg);
+void	put_down_forks(t_philo *philo);
 int	set_t_start(t_table *table, t_philo *philo);
 int	set_table(int argc, char **argv, t_table *table);
 void	solo_adventure(t_philo *philo);
 void	*start_routine(void *arg);
-void	print_status(t_philo *philo, char *msg);
-void	destroy_philos(t_philo *philo, unsigned int num_of_phil);
-int	all_philos_ate(t_table *table, t_philo *philos);
-void	*monitor(void *arg);
-void	precision_timer(long duration);
 // macros
 #endif
