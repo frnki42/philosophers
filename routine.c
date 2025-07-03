@@ -34,9 +34,7 @@ void	*start_routine(void *arg)
 		pick_up_forks(philo);
 		pthread_mutex_lock(philo->state_lock);
 		philo->t_last = check_time();
-		pthread_mutex_unlock(philo->state_lock);
 		precision_timer(philo->table->t_eat);
-		pthread_mutex_lock(philo->state_lock);
 		philo->ate++;
 		pthread_mutex_unlock(philo->state_lock);
 		put_down_forks(philo);
