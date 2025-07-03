@@ -32,19 +32,8 @@ void	*start_routine(void *arg)
 	while (philo->table->all_alive)
 	{
 		pick_up_forks(philo);
-		print_status(philo, "is eating");
-		pthread_mutex_lock(philo->state_lock);
-		philo->t_last = check_time();
-		philo->ate++;
-		if (philo->table->must_eat > 0 && philo->ate >= (unsigned int)philo->table->must_eat)
-		{
-			pthread_mutex_unlock(philo->state_lock);
-			precision_timer(philo->table->t_eat);
-			put_down_forks(philo);
-			break ;
-		}
-		pthread_mutex_unlock(philo->state_lock);
 		precision_timer(philo->table->t_eat);
+		philo->ate++;
 		put_down_forks(philo);
 		print_status(philo, "is sleeping");
 		precision_timer(philo->table->t_sleep);

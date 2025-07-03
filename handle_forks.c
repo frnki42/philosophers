@@ -17,16 +17,23 @@ void	pick_left_first(t_philo *philo)
 	long	timestamp;
 
 	pthread_mutex_lock(philo->fork_left);
-	pthread_mutex_lock(philo->fork_right);
-	if (!philo->table->all_alive)
-		return (put_down_forks(philo));
 	pthread_mutex_lock(&philo->table->msg_lock);
+	if (!philo->table->all_alive)
+	{
+		pthread_mutex_unlock(philo->fork_left);
+		pthread_mutex_unlock(&philo->table->msg_lock);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->table->msg_lock);
+	pthread_mutex_lock(philo->fork_right);
 	if (philo->table->all_alive)
 	{
 		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i has taken a fork (left)\n", timestamp, philo->num);
+		printf("%li %i has taken a fork\n", timestamp, philo->num);
 		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i has taken a fork (right)\n", timestamp, philo->num);
+		printf("%li %i has taken a fork\n", timestamp, philo->num);
+		timestamp = check_time() - philo->table->t_start;
+		printf("%li %i is eating\n", timestamp, philo->num);
 	}
 	pthread_mutex_unlock(&philo->table->msg_lock);
 }
@@ -37,18 +44,24 @@ void	pick_right_first(t_philo *philo)
 	long	timestamp;
 
 	pthread_mutex_lock(philo->fork_right);
-	pthread_mutex_lock(philo->fork_left);
+	pthread_mutex_lock(&philo->table->msg_lock);
 	if (!philo->table->all_alive)
-		return (put_down_forks(philo));
+	{
+		pthread_mutex_unlock(philo->fork_right);
+		pthread_mutex_unlock(&philo->table->msg_lock);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->table->msg_lock);
+	pthread_mutex_lock(philo->fork_left);
 	pthread_mutex_lock(&philo->table->msg_lock);
 	if (philo->table->all_alive)
 	{
 		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i has taken a fork (right)\n",
-			timestamp, philo->num);
+		printf("%li %i has taken a fork\n", timestamp, philo->num);
 		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i has taken a fork (left)\n",
-			timestamp, philo->num);
+		printf("%li %i has taken a fork\n", timestamp, philo->num);
+		timestamp = check_time() - philo->table->t_start;
+		printf("%li %i is eating\n", timestamp, philo->num);
 	}
 	pthread_mutex_unlock(&philo->table->msg_lock);
 }
@@ -73,11 +86,7 @@ void	put_down_forks(t_philo *philo)
 	if (philo->table->all_alive)
 	{
 		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i put a fork down (left)\n",
-			timestamp, philo->num);
-		timestamp = check_time() - philo->table->t_start;
-		printf("%li %i put a fork down (right)\n",
-			timestamp, philo->num);
+		printf("%li %i is sleeping\n", timestamp, philo->num);
 	}
 	pthread_mutex_unlock(&philo->table->msg_lock);
 }
