@@ -62,7 +62,7 @@ void	*monitor(void *arg)
 		{
 			pthread_mutex_lock(&table->msg_lock);
 			table->all_alive = 0;
-			pthread_mutex_lock_unlock(&table->msg_lock);
+			pthread_mutex_unlock(&table->msg_lock);
 			return (NULL);
 		}
 		usleep(1000);

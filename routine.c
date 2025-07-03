@@ -36,7 +36,7 @@ void	*start_routine(void *arg)
 		pthread_mutex_lock(philo->state_lock);
 		philo->t_last = check_time();
 		philo->ate++;
-		if (!philo->table->must_eat > 0 && philo->ate >= (unsigned int)philo->table->must_eat)
+		if (philo->table->must_eat > 0 && philo->ate >= (unsigned int)philo->table->must_eat)
 		{
 			pthread_mutex_unlock(philo->state_lock);
 			precision_timer(philo->table->t_eat);
