@@ -46,14 +46,13 @@ int	create_threads(t_philo *philo, t_table *table)
 	unsigned int	i;
 	pthread_t	monitor_thread;
 
-	i = 0;
-	while (i < table->num_of_phil && table->all_alive)
+	i = -1;
+	while (++i < table->num_of_phil && table->all_alive)
 	{
 		if (create_thread(philo, table, i))
 			return (1);
 		if (i % 2 == 0)
 			usleep(100);
-		i++;
 	}
 	if (pthread_create(&monitor_thread, NULL, monitor, philo))
 	{

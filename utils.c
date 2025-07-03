@@ -73,14 +73,7 @@ void	destroy_philos(t_philo *philo, unsigned int num_of_phil)
 
 	i = -1;
 	while (++i < num_of_phil)
-	{
-		if (philo[i].state_lock)
-		{
-			pthread_mutex_destroy(philo[i].state_lock);
-			free(philo[i].state_lock);
-			philo[i].state_lock = NULL;
-		}
-	}
+		philo[i].state_lock = NULL;
 }
 
 // starts a funny starving adventure

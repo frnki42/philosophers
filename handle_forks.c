@@ -26,6 +26,7 @@ void	pick_left_first(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->table->msg_lock);
 	pthread_mutex_lock(philo->fork_right);
+	pthread_mutex_lock(&philo->table->msg_lock);
 	if (philo->table->all_alive)
 	{
 		timestamp = check_time() - philo->table->t_start;
