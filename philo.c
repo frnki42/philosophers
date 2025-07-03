@@ -15,10 +15,10 @@ static int	init_all(int argc, char **argv, t_table *table, t_philo **philo)
 {
 	unsigned int	i;
 
+	if (check_args(argc, argv))
+		return (1);
 	if (init_table(argc, argv, table))
 		return (1);
-	if (init_mutexes(table))
-		return (destroy_table(table), 1);
 	*philo = malloc(sizeof(t_philo) * table->num_of_phil);
 	if (!*philo)
 		return (destroy_table(table), 1);
@@ -38,7 +38,6 @@ static int	run_all(t_table *table, t_philo *philo)
 		return (solo_adventure(philo), 0);
 	if (create_threads(philo, table))
 		return (1);
-	monitor((void*)philo);
 	join_threads(table, philo);
 	return (0);
 }
