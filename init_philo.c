@@ -16,7 +16,7 @@ void	init_philo_zero(t_philo *philo, unsigned int index)
 {
 	philo[index].fork_left = NULL;
 	philo[index].fork_right = NULL;
-	philo[index].meal_lock = NULL;
+	philo[index].state_lock = NULL;
 	philo[index].table = NULL;
 	philo[index].ate = 0;
 	philo[index].num = 0;
@@ -41,13 +41,13 @@ int	create_philo(t_philo *philo, t_table *table, unsigned int index)
 {
 	init_philo_zero(philo, index);
 	set_philo(philo, table, index);
-	philo[index].meal_lock = malloc(sizeof(pthread_mutex_t));
-	if (!philo[index].meal_lock)
+	philo[index].state_lock = malloc(sizeof(pthread_mutex_t));
+	if (!philo[index].state_lock)
 	{
 		printf("# malloc failed!\n");
 		return (1);
 	}
-	pthread_mutex_init(philo[index].meal_lock, NULL);
+	pthread_mutex_init(philo[index].state_lock, NULL);
 	return (0);
 }
 

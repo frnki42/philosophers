@@ -17,10 +17,10 @@ static int	philo_has_died(t_philo *philo)
 	long	time_now;
 	long	time_last_meal;
 
-	pthread_mutex_lock(philo->meal_lock);
+	pthread_mutex_lock(philo->state_lock);
 	time_now = check_time();
 	time_last_meal = time_now - philo->t_last;
-	pthread_mutex_unlock(philo->meal_lock);
+	pthread_mutex_unlock(philo->state_lock);
 	if (time_last_meal > philo->table->t_die)
 		return (1);
 	return (0);

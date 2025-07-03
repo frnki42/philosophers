@@ -21,10 +21,10 @@ int	all_philos_ate(t_table *table, t_philo *philos)
 	i = -1;
 	while (++i < table->num_of_phil)
 	{
-		pthread_mutex_lock(philos[i].meal_lock);
+		pthread_mutex_lock(philos[i].state_lock);
 		if (philos[i].ate >= table->must_eat)
 			finished++;
-		pthread_mutex_unlock(philos[i].meal_lock);
+		pthread_mutex_unlock(philos[i].state_lock);
 	}
 	if (finished == table->num_of_phil)
 		return (1);
