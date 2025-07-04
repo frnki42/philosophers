@@ -29,16 +29,27 @@ void	init_table_zero(t_table *table)
 int	init_mutexes(t_table *table)
 {
 	unsigned int	i;
+	unsigned int	j;
 
 	i = -1;
 	while (++i < table->num_of_phil)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
+		{
+			j = 0;
+			while (j < i)
+				pthread_mutex_destroy(&table->forks[j++]);
 			return (1);
+		}
 	}
 	if (pthread_mutex_init(&table->msg_lock, NULL)
 		|| pthread_mutex_init(&table->alive_lock, NULL))
-		return (destroy_table(table), 1);
+	{
+			j = 0;
+			while (j < i)
+				pthread_mutex_destroy(&table->forks[i++]);
+			return (1);			
+	}
 	return (0);
 }
 

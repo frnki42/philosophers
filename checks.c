@@ -42,7 +42,7 @@ static int	check_str(char *str)
 {
 	if (!*str)
 		return (printf("# empty argument\n"), 1);
-	if (*str == '+' || *str == '-' || check_char(*str))
+	if (*str == '+' || *str == '-' )
 		str++;
 	while (*str)
 	{
