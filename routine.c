@@ -29,7 +29,6 @@ void	*start_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->num % 2 == 0)
 		usleep(100);
-	philo->t_last = check_time();
 	while (1)
 	{
 		pthread_mutex_lock(&philo->table->alive_lock);
@@ -39,10 +38,11 @@ void	*start_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->alive_lock);
+		philo->t_last = check_time();
 		pick_up_forks(philo);
 		print_status(philo, "is eating");
-		precision_timer(philo->t_eat);
 		philo->t_last = check_time();
+		precision_timer(philo->t_eat);
 		philo->ate++;
 		put_down_forks(philo);
 		print_status(philo, "is sleeping");

@@ -65,7 +65,7 @@ void	*monitor(void *arg)
 			pthread_mutex_unlock(&table->alive_lock);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }
