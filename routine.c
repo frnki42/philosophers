@@ -57,9 +57,9 @@ void	*start_routine(void *arg)
 
 		pthread_mutex_lock(&philo->meal_lock);
 		philo->t_last = check_time();
+		print_status(philo, "is eating");
 		pthread_mutex_unlock(&philo->meal_lock);
 
-		print_status(philo, "is eating");
 		precision_timer(philo->table->t_eat);
 
 		pthread_mutex_lock(&philo->meal_lock);
