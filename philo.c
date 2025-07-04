@@ -38,6 +38,7 @@ int	main(int argc, char **argv)
 {
 	t_table		*table;
 
+	table = NULL;
 	if (init_all(argc, argv, table) || run_all(table))
 		return (1);
 	destroy_table(table);

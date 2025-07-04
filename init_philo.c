@@ -36,6 +36,6 @@ int	set_philos(t_table *table)
 		return (1);
 	i = -1;
 	while (++i < table->num_of_phil)
-		set_philo(&table->philos[i], i);
+		set_philo(table, i);
 	return (0);
 }
