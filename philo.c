@@ -38,7 +38,9 @@ int	main(int argc, char **argv)
 {
 	t_table		*table;
 
-	table = NULL;
+	table = malloc(sizeof(t_table));
+	if (!table)
+		return (1);
 	if (init_all(argc, argv, table) || run_all(table))
 		return (1);
 	destroy_table(table);
