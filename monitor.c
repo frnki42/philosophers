@@ -30,6 +30,7 @@ static int	philo_has_died(t_philo *philo)
 static void	report_death(t_philo *philo)
 {
 	t_table	*table;
+	long	now;
 
 	table = philo->table;
 	pthread_mutex_lock(&table->msg_lock);
@@ -37,7 +38,13 @@ static void	report_death(t_philo *philo)
 	if (table->all_alive)
 	{
 		table->all_alive = 0;
+		now = check_time();
 		printf("%ld %d died\n", check_time() - table->t_start, philo->num);
+		printf("💀 Philosopher %d died at %ldms, last meal was at %ldms, delta = %ldms\n",
+		philo->num,
+		now,
+		philo->t_last,
+		now - philo->t_last);
 	}
 	pthread_mutex_unlock(&table->alive_lock);
 	pthread_mutex_unlock(&table->msg_lock);

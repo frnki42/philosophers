@@ -19,6 +19,8 @@ void	init_table_zero(t_table *table)
 	table->must_eat = -1;
 	table->all_alive = 1;
 	table->num_of_phil = 0;
+	table->ready_count = 0;
+	table->start = 0;
 	table->t_die = 0;
 	table->t_eat = 0;
 	table->t_sleep = 0;
@@ -43,7 +45,8 @@ int	init_mutexes(t_table *table)
 		}
 	}
 	if (pthread_mutex_init(&table->msg_lock, NULL)
-		|| pthread_mutex_init(&table->alive_lock, NULL))
+		|| pthread_mutex_init(&table->alive_lock, NULL)
+		|| pthread_mutex_init(&table->start_lock, NULL))
 	{
 			j = 0;
 			while (j < i)

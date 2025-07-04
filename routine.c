@@ -18,7 +18,7 @@ void	precision_timer(long duration)
 
 	timestamp = check_time();
 	while ((check_time() - timestamp) < duration)
-		usleep(50);
+		usleep(1000);
 }
 
 // philos 9-5
@@ -27,10 +27,24 @@ void	*start_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->num % 2 == 0)
-		usleep(100);
+	pthread_mutex_lock(&philo->table->start_lock);
+	philo->table->ready_count++;
+	pthread_mutex_unlock(&philo->table->start_lock);
 	while (1)
 	{
+		pthread_mutex_lock(&philo->table->start_lock);
+		if (philo->table->start)
+		{
+			pthread_mutex_unlock(&philo->table->start_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->table->start_lock);
+		usleep(100);
+	}
+	while (1)
+	{
+		if (philo->num % 2 == 0)
+			usleep(1000);
 		pthread_mutex_lock(&philo->table->alive_lock);
 		if (!philo->table->all_alive)
 		{
@@ -38,11 +52,12 @@ void	*start_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->alive_lock);
-		pick_up_forks(philo);
-		print_status(philo, "is eating");
+		if (!pick_up_forks(philo))
+			break ;
 		pthread_mutex_lock(&philo->meal_lock);
 		philo->t_last = check_time();
 		pthread_mutex_unlock(&philo->meal_lock);
+		print_status(philo, "is eating");
 		precision_timer(philo->table->t_eat);
 		pthread_mutex_lock(&philo->meal_lock);
 		philo->ate++;
@@ -51,6 +66,7 @@ void	*start_routine(void *arg)
 		print_status(philo, "is sleeping");
 		precision_timer(philo->table->t_sleep);
 		print_status(philo, "is thinking");
+		usleep(3000);
 	}
 	return (NULL);
 }

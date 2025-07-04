@@ -28,6 +28,9 @@ int	create_thread(t_table *table, unsigned int i)
 
 	if (pthread_create(&table->philos[i].thread, NULL, start_routine, &table->philos[i]))
 	{
+		pthread_mutex_lock(&table->alive_lock);
+		table->all_alive = 0;
+		pthread_mutex_unlock(&table->alive_lock);
 		j = 0;
 		while (j < i)
 			pthread_join(table->philos[j++].thread, NULL);
@@ -48,7 +51,19 @@ int	create_threads(t_table *table)
 		if (create_thread(table, i))
 			return (1);
 		if (i % 2 == 0)
-			usleep(100);
+			usleep(200);
+	}
+	while (1)
+	{
+		pthread_mutex_lock(&table->start_lock);
+		if (table->ready_count == table->num_of_phil)
+		{
+			table->start = 1;
+			pthread_mutex_unlock(&table->start_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&table->start_lock);
+		usleep(100);
 	}
 	if (pthread_create(&monitor_thread, NULL, monitor, table->philos))
 	{

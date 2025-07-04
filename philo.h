@@ -27,10 +27,13 @@ typedef struct s_philo t_philo;
 typedef struct s_table
 {
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	msg_lock;
 	pthread_mutex_t	alive_lock;
+	pthread_mutex_t	msg_lock;
+	pthread_mutex_t	start_lock;
 	t_philo			*philos;
 	long			must_eat;
+	unsigned int	ready_count;
+	int				start;
 	unsigned int	all_alive;
 	unsigned int	num_of_phil;
 	long	    	t_die;
@@ -61,7 +64,7 @@ int		init_table(int argc, char **argv, t_table *table);
 int		init_mutexes(t_table *table);
 void	join_threads(t_table *table);
 void	*monitor(void *arg);
-void	pick_up_forks(t_philo *philo);
+int		pick_up_forks(t_philo *philo);
 void	precision_timer(long duration);
 void	print_status(t_philo *philo, char *msg);
 void	put_down_forks(t_philo *philo);

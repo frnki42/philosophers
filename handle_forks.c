@@ -12,7 +12,7 @@
 #include "philo.h"
 
 // lock fork_left before locking fork_right
-void	pick_left_first(t_philo *philo)
+int	pick_left_first(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_left);
 	print_status(philo, "has taken a fork");
@@ -21,15 +21,16 @@ void	pick_left_first(t_philo *philo)
 	{
 		pthread_mutex_unlock(&philo->table->alive_lock);
 		pthread_mutex_unlock(philo->fork_left);
-		return ;
+		return (0);
 	}
 	pthread_mutex_unlock(&philo->table->alive_lock);
 	pthread_mutex_lock(philo->fork_right);
 	print_status(philo, "has taken a fork");
+	return (1);
 }
 
 // lock fork_right before locking fork_left
-void	pick_right_first(t_philo *philo)
+int	pick_right_first(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_right);
 	print_status(philo, "has taken a fork");
@@ -38,20 +39,21 @@ void	pick_right_first(t_philo *philo)
 	{
 		pthread_mutex_unlock(&philo->table->alive_lock);
 		pthread_mutex_unlock(philo->fork_right);
-		return ;
+		return (0); ;
 	}
 	pthread_mutex_unlock(&philo->table->alive_lock);
 	pthread_mutex_lock(philo->fork_left);
 	print_status(philo, "has taken a fork");
+	return (1);
 }
 
 // lock and unlock mutexes for fork_left, fork_right
-void	pick_up_forks(t_philo *philo)
+int	pick_up_forks(t_philo *philo)
 {
 	if (philo->num % 2)
-		pick_left_first(philo);
+		return (pick_left_first(philo));
 	else
-		pick_right_first(philo);
+		return (pick_right_first(philo));
 }
 
 // put forks down

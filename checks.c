@@ -15,20 +15,19 @@
 int	all_philos_ate(t_table *table, t_philo *philos)
 {
 	unsigned int	i;
-	unsigned int	finished;
 
-	finished = 0;
 	i = -1;
 	while (++i < table->num_of_phil)
 	{
 		pthread_mutex_lock(&philos[i].meal_lock);
-		if (philos[i].ate >= table->must_eat)
-			finished++;
+		if (philos[i].ate < table->must_eat)
+		{
+			pthread_mutex_unlock(&table->philos[i].meal_lock);
+			return (0);
+		}
 		pthread_mutex_unlock(&philos[i].meal_lock);
 	}
-	if (finished == table->num_of_phil)
-		return (1);
-	return (0);
+	return (1);
 }
 
 // checks if int is in ascii range for digits
