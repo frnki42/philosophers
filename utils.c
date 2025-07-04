@@ -56,26 +56,13 @@ void	destroy_table(t_table *table)
 
 	i = -1;
 	while (++i < table->num_of_phil)
-	{
 		pthread_mutex_destroy(&table->forks[i]);
-		pthread_mutex_destroy(&table->state_locks[i]);
-	}
 	if (table->forks)
 		free(table->forks);
-	if (table->state_locks)
-		free(table->state_locks);
+	if (table->philos)
+		free(table->philos);
 	pthread_mutex_destroy(&table->msg_lock);
 	pthread_mutex_destroy(&table->alive_lock);
-}
-
-// frees and destroys all state_lock
-void	destroy_philos(t_philo *philo, unsigned int num_of_phil)
-{
-	unsigned int	i;
-
-	i = -1;
-	while (++i < num_of_phil)
-		philo[i].state_lock = NULL;
 }
 
 // starts a funny starving adventure

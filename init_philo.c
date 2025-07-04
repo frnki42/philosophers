@@ -12,49 +12,36 @@
 #include "philo.h"
 
 // inits philo struct
-void	init_philo_zero(t_philo *philo, unsigned int index)
+void	set_philo(t_table *table, unsigned int i)
 {
-	philo[index].fork_left = NULL;
-	philo[index].fork_right = NULL;
-	philo[index].state_lock = NULL;
-	philo[index].table = NULL;
-	philo[index].ate = 0;
-	philo[index].num = 0;
-	philo[index].thread = 0;
-	philo[index].t_last = 0;
-}
-
-// sets forks, table and num for philo
-void	set_philo(t_philo *philo, t_table *table, unsigned int index)
-{
-	philo[index].fork_left = &table->forks[index];
-	if ((index + 1) < table->num_of_phil)
-		philo[index].fork_right = &table->forks[index + 1];
-	else if ((index + 1) == table->num_of_phil)
-		philo[index].fork_right = &table->forks[0];
-	philo[index].table = table;
-	philo[index].num = index + 1;
+	table->philos[i].ate = 0;
+	table->philos[i].thread = 0;
+	table->philos[i].t_last = 0;
+	table->philos[i].num = i + 1;
+	table->philos[i].table = table;
+	table->philos[i].fork_left = &table->forks[i];
+	if ((i + 1) < table->num_of_phil)
+		table->philos[i].fork_right = &table->forks[i + 1];
+	else if ((i + 1) == table->num_of_phil)
+		table->philos[i].fork_right = &table->forks[0];
 }
 
 // inits and sets philo (+mutex)
-int	create_philo(t_philo *philo, t_table *table, unsigned int index)
+int	set_philos(t_table *table)
 {
-	init_philo_zero(philo, index);
-	set_philo(philo, table, index);
-	philo[index].state_lock = &table->state_locks[index];
-	return (0);
-}
+	unsigned int	i;
 
-// sets up all philos
-int	init_philo(t_table *table, t_philo *philo)
-{
-	unsigned int	index;
-
-	index = 0;
-	while (index < table->num_of_phil)
+	table->philos = malloc(sizeof(t_philo) * table->num_of_phil);
+	if (!table->philos)
+		return (1);
+	i = -1;
+	while (++i < table->num_of_phil)
 	{
-		if (create_philo(philo, table, index++))
-			return (destroy_philos(philo, index), 1);
+		table->philos[i] = malloc(sizeof(t_philo));
+		if (!&table->philos[i])
+			return (1);
+		init_philo_zero(table, i);
+		set_philo(&table->philos[i], i);
 	}
 	return (0);
 }

@@ -11,53 +11,35 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-static int	init_all(int argc, char **argv, t_table *table, t_philo **philo)
+static int	init_all(int argc, char **argv, t_table *table)
 {
 	unsigned int	i;
 
-	if (check_args(argc, argv))
+	if (check_args(argc, argv) || init_table(argc, argv, table))
 		return (1);
-	if (init_table(argc, argv, table))
-		return (1);
-	*philo = malloc(sizeof(t_philo) * table->num_of_phil);
-	if (!*philo)
+	if (set_philos(table) || set_t_start(table))
 		return (destroy_table(table), 1);
-	if (init_philo(table, *philo))
-		return (destroy_table(table), free(*philo), 1);
-	if (set_t_start(table, *philo))
-		return (destroy_table(table), free(*philo), 1);
 	i = 0;
 	while (i < table->num_of_phil)
-		(*philo)[i++].t_last = table->t_start;
+		table->philos[i++].t_last = table->t_start;
 	return (0);
 }
 
-static int	run_all(t_table *table, t_philo *philo)
+static int	run_all(t_table *table)
 {
 	if (table->num_of_phil == 1)
-		return (solo_adventure(philo), 0);
-	if (create_threads(philo, table))
-		return (1);
-	join_threads(table, philo);
+		return (solo_adventure(&table->philos[0]), 0);
+	if (create_threads(table))
+		return (destroy_table(table), 1);
 	return (0);
-}
-
-static void	clean_up(t_table *table, t_philo *philo)
-{
-	destroy_philos(philo, table->num_of_phil);
-	destroy_table(table);
-	free(philo);
 }
 
 int	main(int argc, char **argv)
 {
-	t_table		table;
-	t_philo		*philo;
+	t_table		*table;
 
-	if (init_all(argc, argv, &table, &philo))
+	if (init_all(argc, argv, table) || run_all(table))
 		return (1);
-	if (run_all(&table, philo))
-		return (1);
-	clean_up(&table, philo);
+	destroy_table(table);
 	return (0);
 }

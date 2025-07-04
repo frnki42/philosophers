@@ -15,7 +15,7 @@
 void	init_table_zero(t_table *table)
 {
 	table->forks = NULL;
-	table->state_locks = NULL;
+	table->philos = NULL;
 	table->must_eat = -1;
 	table->all_alive = 1;
 	table->num_of_phil = 0;
@@ -33,10 +33,8 @@ int	init_mutexes(t_table *table)
 	i = -1;
 	while (++i < table->num_of_phil)
 	{
-		if (pthread_mutex_init(&table->forks[i], NULL)
-			|| pthread_mutex_init(&table->state_locks[i], NULL))
+		if (pthread_mutex_init(&table->forks[i], NULL))
 		{
-			printf("# pthread_mutex_init failed!\n");
 			destroy_table(table);
 			return (1);
 		}
@@ -44,37 +42,16 @@ int	init_mutexes(t_table *table)
 	if (pthread_mutex_init(&table->msg_lock, NULL)
 		|| pthread_mutex_init(&table->alive_lock, NULL))
 	{
-		printf("# pthread_mutex_init failed!\n");
 		destroy_table(table);
 		return (1);
 	}
 	return (0);
 }
 
-// allocates forks and calls create_mutexes() to .. well, you already know
-int	init_forks_and_state_locks(t_table *table)
-{
-	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_of_phil);
-	table->state_locks = malloc(sizeof(pthread_mutex_t) * table->num_of_phil);
-	if (!table->forks || !table->state_locks)
-	{
-		printf("# malloc failed!\n");
-		free(table->forks);
-		free(table->state_locks);
-		return (1);
-	}
-	if (init_mutexes(table))
-		return (1);
-	return (0);
-}
-
-
 // parses arguments and prepares table
 int	init_table(int argc, char **argv, t_table *table)
 {
 	init_table_zero(table);
 	set_table(argc, argv, table);
-	if (init_forks_and_state_locks(table))
-		return (1);
 	return (0);
 }

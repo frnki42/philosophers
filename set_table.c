@@ -12,17 +12,11 @@
 #include "philo.h"
 
 // starts the stopwatch
-int	set_t_start(t_table *table, t_philo *philo)
+int	set_t_start(t_table *table)
 {
 	table->t_start = check_time();
 	if (table->t_start == -1)
-	{
-		printf("# gettimeofday() failed. cleaning up & exit.\n");
-		destroy_philos(philo, table->num_of_phil);
-		destroy_table(table);
-		free(philo);
 		return (1);
-	}
 	return (0);
 }
 
@@ -55,12 +49,28 @@ static int	set_long(long *time, char *arg)
 	return (0);
 }
 
+// allocates forks and calls create_mutexes() to .. well, you already know
+int	init_forks(t_table *table)
+{
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_of_phil);
+	if (!table->forks)
+	{
+		printf("# malloc failed!\n");
+		free(table->forks);
+		return (1);
+	}
+	return (0);
+}
+
 // sets t_die, t_eat, t_sleep and num_of_phil
 int	set_table(int argc, char **argv, t_table *table)
 {
-	if (set_num_of_phil(table, argv[1]) || set_long(&table->t_die, argv[2]))
-		return (1);
-	if (set_long(&table->t_eat, argv[3]) || set_long(&table->t_sleep, argv[4]))
+	if (set_num_of_phil(table, argv[1])
+		|| set_long(&table->t_die, argv[2])
+		|| set_long(&table->t_eat, argv[3])
+		|| set_long(&table->t_sleep, argv[4])
+		|| init_forks(table)
+		|| init_mutexes(table))
 		return (1);
 	if (argc == 6)
 	{
