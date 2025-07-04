@@ -29,6 +29,7 @@ typedef struct s_table
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	msg_lock;
 	pthread_mutex_t	alive_lock;
+	pthread_mutex_t	state_lock;
 	t_philo			*philos;
 	long			must_eat;
 	unsigned int	all_alive;
@@ -44,6 +45,9 @@ typedef struct s_philo
 	unsigned int	num;
 	pthread_t		thread;
 	unsigned int	ate;
+	long			t_eat;
+	long			t_sleep;
+	long			t_die;
 	long			t_last;
 	t_table			*table;
 	pthread_mutex_t	*fork_left;

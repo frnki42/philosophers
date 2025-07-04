@@ -34,25 +34,19 @@ int	init_mutexes(t_table *table)
 	while (++i < table->num_of_phil)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
-		{
-			destroy_table(table);
 			return (1);
-		}
 	}
 	if (pthread_mutex_init(&table->msg_lock, NULL)
 		|| pthread_mutex_init(&table->alive_lock, NULL))
-	{
-		destroy_table(table);
-		return (1);
-	}
+		return (destroy_table(table), 1);
 	return (0);
 }
 
 // parses arguments and prepares table
 int	init_table(int argc, char **argv, t_table *table)
 {
-
 	init_table_zero(table);
-	set_table(argc, argv, table);
+	if (set_table(argc, argv, table))
+		return (destroy_table(table), 1);
 	return (0);
 }
