@@ -45,11 +45,9 @@ typedef struct s_philo
 	unsigned int	num;
 	pthread_t		thread;
 	unsigned int	ate;
-	long			t_eat;
-	long			t_sleep;
-	long			t_die;
 	long			t_last;
 	t_table			*table;
+	pthread_mutex_t	meal_lock; 
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
 }	t_philo;

@@ -38,15 +38,18 @@ void	*start_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->alive_lock);
-		philo->t_last = check_time();
 		pick_up_forks(philo);
 		print_status(philo, "is eating");
+		pthread_mutex_lock(&philo->meal_lock);
 		philo->t_last = check_time();
-		precision_timer(philo->t_eat);
+		pthread_mutex_unlock(&philo->meal_lock);
+		precision_timer(philo->table->t_eat);
+		pthread_mutex_lock(&philo->meal_lock);
 		philo->ate++;
+		pthread_mutex_unlock(&philo->meal_lock);
 		put_down_forks(philo);
 		print_status(philo, "is sleeping");
-		precision_timer(philo->t_sleep);
+		precision_timer(philo->table->t_sleep);
 		print_status(philo, "is thinking");
 	}
 	return (NULL);
