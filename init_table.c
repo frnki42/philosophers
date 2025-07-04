@@ -61,6 +61,6 @@ int	init_table(int argc, char **argv, t_table *table)
 {
 	init_table_zero(table);
 	if (set_table(argc, argv, table))
-		return (destroy_table(table), 1);
+		return (1);
 	return (0);
 }

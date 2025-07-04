@@ -16,7 +16,6 @@ static void	set_philo(t_table *table, unsigned int i)
 {
 	table->philos[i].ate = 0;
 	table->philos[i].thread = 0;
-	table->philos[i].t_last = 0;
 	table->philos[i].num = i + 1;
 	table->philos[i].table = table;
 	table->philos[i].fork_left = &table->forks[i];

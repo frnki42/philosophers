@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-// ngl, this is the coolest part in this project
+// pew pew pew
 void	precision_timer(long duration)
 {
-	long	timestamp;
+	long	time;
 
-	timestamp = check_time();
-	while ((check_time() - timestamp) < duration)
-		usleep(1000);
+	time = check_time();
+	while ((check_time() - time) < duration)
+		usleep(100);
 }
 
 // philos 9-5
@@ -44,7 +44,7 @@ void	*start_routine(void *arg)
 	while (1)
 	{
 		if (philo->num % 2 == 0)
-			usleep(1000);
+			usleep(420);
 		pthread_mutex_lock(&philo->table->alive_lock);
 		if (!philo->table->all_alive)
 		{
@@ -54,15 +54,20 @@ void	*start_routine(void *arg)
 		pthread_mutex_unlock(&philo->table->alive_lock);
 		if (!pick_up_forks(philo))
 			break ;
+
 		pthread_mutex_lock(&philo->meal_lock);
 		philo->t_last = check_time();
 		pthread_mutex_unlock(&philo->meal_lock);
+
 		print_status(philo, "is eating");
 		precision_timer(philo->table->t_eat);
+
 		pthread_mutex_lock(&philo->meal_lock);
 		philo->ate++;
 		pthread_mutex_unlock(&philo->meal_lock);
+
 		put_down_forks(philo);
+
 		print_status(philo, "is sleeping");
 		precision_timer(philo->table->t_sleep);
 		print_status(philo, "is thinking");
