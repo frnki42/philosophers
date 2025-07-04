@@ -22,6 +22,8 @@
 // macros
 // typedef & structs
 
+typedef struct s_philo t_philo;
+
 typedef struct s_table
 {
 	pthread_mutex_t	*forks;
@@ -52,10 +54,8 @@ int		all_philos_ate(t_table *table, t_philo *philos);
 int		check_args(int argc, char **argv);
 long	check_time(void);
 int		create_threads(t_table *table);
-void	destroy_philos(t_philo *philo, unsigned int num_of_phil);
 void	destroy_table(t_table *table);
 long	ft_atolong(char *str);
-int		init_philo(t_table *table, t_philo *philo);
 int		init_table(int argc, char **argv, t_table *table);
 int		init_mutexes(t_table *table);
 void	join_threads(t_table *table);
@@ -68,6 +68,6 @@ int		set_t_start(t_table *table);
 int		set_table(int argc, char **argv, t_table *table);
 void	solo_adventure(t_philo *philo);
 void	*start_routine(void *arg);
-int		set_philos(t_table *table)
+int		set_philos(t_table *table);
 
 #endif

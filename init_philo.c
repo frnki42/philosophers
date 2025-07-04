@@ -12,7 +12,7 @@
 #include "philo.h"
 
 // inits philo struct
-void	set_philo(t_table *table, unsigned int i)
+static void	set_philo(t_table *table, unsigned int i)
 {
 	table->philos[i].ate = 0;
 	table->philos[i].thread = 0;
@@ -22,7 +22,7 @@ void	set_philo(t_table *table, unsigned int i)
 	table->philos[i].fork_left = &table->forks[i];
 	if ((i + 1) < table->num_of_phil)
 		table->philos[i].fork_right = &table->forks[i + 1];
-	else if ((i + 1) == table->num_of_phil)
+	else 
 		table->philos[i].fork_right = &table->forks[0];
 }
 
@@ -36,12 +36,6 @@ int	set_philos(t_table *table)
 		return (1);
 	i = -1;
 	while (++i < table->num_of_phil)
-	{
-		table->philos[i] = malloc(sizeof(t_philo));
-		if (!&table->philos[i])
-			return (1);
-		init_philo_zero(table, i);
 		set_philo(&table->philos[i], i);
-	}
 	return (0);
 }

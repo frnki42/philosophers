@@ -40,11 +40,9 @@ void	*start_routine(void *arg)
 		pthread_mutex_unlock(&philo->table->alive_lock);
 		pick_up_forks(philo);
 		print_status(philo, "is eating");
-		pthread_mutex_lock(philo->state_lock);
 		philo->t_last = check_time();
 		precision_timer(philo->table->t_eat);
 		philo->ate++;
-		pthread_mutex_unlock(philo->state_lock);
 		put_down_forks(philo);
 		print_status(philo, "is sleeping");
 		precision_timer(philo->table->t_sleep);

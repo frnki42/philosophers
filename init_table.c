@@ -51,6 +51,12 @@ int	init_mutexes(t_table *table)
 // parses arguments and prepares table
 int	init_table(int argc, char **argv, t_table *table)
 {
+	table = malloc(sizeof(t_table));
+	if (!table)
+	{
+		printf("# malloc failed!\n");
+		return (1);
+	}
 	init_table_zero(table);
 	set_table(argc, argv, table);
 	return (0);

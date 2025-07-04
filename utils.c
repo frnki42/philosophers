@@ -57,12 +57,14 @@ void	destroy_table(t_table *table)
 	i = -1;
 	while (++i < table->num_of_phil)
 		pthread_mutex_destroy(&table->forks[i]);
+	pthread_mutex_destroy(&table->msg_lock);
+	pthread_mutex_destroy(&table->alive_lock);
 	if (table->forks)
 		free(table->forks);
 	if (table->philos)
 		free(table->philos);
-	pthread_mutex_destroy(&table->msg_lock);
-	pthread_mutex_destroy(&table->alive_lock);
+	if (table)
+		free(table);
 }
 
 // starts a funny starving adventure
