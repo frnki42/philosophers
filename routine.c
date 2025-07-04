@@ -54,7 +54,6 @@ void	*start_routine(void *arg)
 		pthread_mutex_unlock(&philo->table->alive_lock);
 		if (!pick_up_forks(philo))
 			break ;
-
 		pthread_mutex_lock(&philo->meal_lock);
 		philo->t_last = check_time();
 		print_status(philo, "is eating");
