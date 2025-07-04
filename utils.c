@@ -59,6 +59,12 @@ void	destroy_table(t_table *table)
 		pthread_mutex_destroy(&table->forks[i]);
 	pthread_mutex_destroy(&table->msg_lock);
 	pthread_mutex_destroy(&table->alive_lock);
+	if (table->philos)
+	{
+		i = -1;
+		while (++i < table->num_of_phil)
+			pthread_mutex_destroy(&table->philos[i].meal_lock);
+	}
 	if (table->forks)
 		free(table->forks);
 	if (table->philos)
@@ -73,13 +79,9 @@ void	solo_adventure(t_philo *philo)
 	long	timestamp;
 
 	pthread_mutex_lock(philo->fork_left);
-	pthread_mutex_lock(&philo->table->msg_lock);
 	timestamp = check_time() - philo->table->t_start;
-	printf("%li %i has taken a fork (left)\n", timestamp, philo->num);
-	pthread_mutex_unlock(&philo->table->msg_lock);
+	printf("%li %i has taken a fork\n", timestamp, philo->num);
 	usleep(philo->table->t_die * 1000);
-	pthread_mutex_lock(&philo->table->msg_lock);
 	timestamp = check_time() - philo->table->t_start;
 	printf("%li %i died\n", timestamp, philo->num);
-	pthread_mutex_unlock(&philo->table->msg_lock);
 }
