@@ -18,7 +18,7 @@ void	precision_timer(long duration)
 
 	timestamp = check_time();
 	while ((check_time() - timestamp) < duration)
-		usleep(100);
+		usleep(50);
 }
 
 // philos 9-5
