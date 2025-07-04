@@ -28,7 +28,7 @@ void	*start_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->num % 2 == 0)
-		usleep(200);
+		usleep(100);
 	philo->t_last = check_time();
 	while (1)
 	{
@@ -46,7 +46,7 @@ void	*start_routine(void *arg)
 		philo->ate++;
 		put_down_forks(philo);
 		print_status(philo, "is sleeping");
-		precision_timer(philo->table->t_sleep);
+		precision_timer(philo->t_sleep);
 		print_status(philo, "is thinking");
 	}
 	return (NULL);

@@ -18,6 +18,9 @@ static void	set_philo(t_table *table, unsigned int i)
 	table->philos[i].thread = 0;
 	table->philos[i].t_last = 0;
 	table->philos[i].num = i + 1;
+	table->philos[i].t_eat = table->t_eat;
+	table->philos[i].t_sleep = table->t_sleep;
+	table->philos[i].t_die = table->t_die;
 	table->philos[i].table = table;
 	table->philos[i].fork_left = &table->forks[i];
 	if ((i + 1) < table->num_of_phil)
