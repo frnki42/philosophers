@@ -53,6 +53,7 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
 }	t_philo;
+
 // prototypes
 int		all_philos_ate(t_table *table, t_philo *philos);
 int		check_args(int argc, char **argv);

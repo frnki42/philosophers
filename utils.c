@@ -84,4 +84,5 @@ void	solo_adventure(t_philo *philo)
 	usleep(philo->table->t_die * 1000);
 	time = check_time() - philo->table->t_start;
 	printf("%li %i died\n", time, philo->num);
+	pthread_mutex_unlock(philo->fork_left);
 }

@@ -11,6 +11,41 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// collects tickets at the entrance
+static void wait_for_all(t_table *table)
+{
+	while (1)
+	{
+		pthread_mutex_lock(&table->start_lock);
+		if (table->ready_count == table->num_of_phil)
+		{
+			pthread_mutex_unlock(&table->start_lock);
+			pthread_mutex_lock(&table->start_lock);
+			table->start = 1;
+			pthread_mutex_unlock(&table->start_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&table->start_lock);
+		usleep(100);
+	}
+}
+// big brother is watching
+static int create_monitor_thread(t_table *table)
+{
+	pthread_t	monitor_thread;
+
+	if (pthread_create(&monitor_thread, NULL, monitor, table->philos))
+	{
+		pthread_mutex_lock(&table->alive_lock);
+		table->all_alive = 0;
+		pthread_mutex_unlock(&table->alive_lock);
+		join_threads(table);
+		return (1);
+	}
+	pthread_detach(monitor_thread);
+	return (0);
+}
+
 // joins threads
 void	join_threads(t_table *table)
 {
@@ -22,7 +57,7 @@ void	join_threads(t_table *table)
 }
 
 // creates one thread, destroys and frees stuff on failure
-int	create_thread(t_table *table, unsigned int i)
+static int	create_thread(t_table *table, unsigned int i)
 {
 	unsigned int	j;
 
@@ -43,7 +78,6 @@ int	create_thread(t_table *table, unsigned int i)
 int	create_threads(t_table *table)
 {
 	unsigned int	i;
-	pthread_t		monitor_thread;
 
 	i = -1;
 	while (++i < table->num_of_phil)
@@ -51,29 +85,12 @@ int	create_threads(t_table *table)
 		if (create_thread(table, i))
 			return (1);
 	}
-	while (1)
+	wait_for_all(table);
+	if (create_monitor_thread(table))
 	{
-		pthread_mutex_lock(&table->start_lock);
-		if (table->ready_count == table->num_of_phil)
-		{
-			pthread_mutex_unlock(&table->start_lock);
-			pthread_mutex_lock(&table->start_lock);
-			table->start = 1;
-			pthread_mutex_unlock(&table->start_lock);
-			break ;
-		}
-		pthread_mutex_unlock(&table->start_lock);
-		usleep(100);
-	}
-	if (pthread_create(&monitor_thread, NULL, monitor, table->philos))
-	{
-		pthread_mutex_lock(&table->alive_lock);
-		table->all_alive = 0;
-		pthread_mutex_unlock(&table->alive_lock);
 		join_threads(table);
 		return (1);
 	}
-	pthread_detach(monitor_thread);
 	join_threads(table);
 	return (0);
 }
