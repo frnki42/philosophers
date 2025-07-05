@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-
 static int start_cycle(t_philo *philo)
 {
 	if (pick_up_forks(philo))
