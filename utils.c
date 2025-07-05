@@ -76,12 +76,12 @@ void	destroy_table(t_table *table)
 // starts a funny starving adventure
 void	solo_adventure(t_philo *philo)
 {
-	long	timestamp;
+	long	time;
 
 	pthread_mutex_lock(philo->fork_left);
-	timestamp = check_time() - philo->table->t_start;
-	printf("%li %i has taken a fork\n", timestamp, philo->num);
+	time = check_time() - philo->table->t_start;
+	printf("%li %i has taken a fork\n", time, philo->num);
 	usleep(philo->table->t_die * 1000);
-	timestamp = check_time() - philo->table->t_start;
-	printf("%li %i died\n", timestamp, philo->num);
+	time = check_time() - philo->table->t_start;
+	printf("%li %i died\n", time, philo->num);
 }

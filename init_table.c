@@ -38,9 +38,9 @@ int	init_mutexes(t_table *table)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
 		{
-			j = 0;
-			while (j < i)
-				pthread_mutex_destroy(&table->forks[j++]);
+			j = -1;
+			while (++j < i)
+				pthread_mutex_destroy(&table->forks[j]);
 			return (1);
 		}
 	}

@@ -12,7 +12,7 @@
 #include "philo.h"
 
 // inits philo struct
-static void	set_philo(t_table *table, unsigned int i)
+static void	init_philo(t_table *table, unsigned int i)
 {
 	table->philos[i].ate = 0;
 	table->philos[i].thread = 0;
@@ -36,6 +36,6 @@ int	set_philos(t_table *table)
 		return (1);
 	i = -1;
 	while (++i < table->num_of_phil)
-		set_philo(table, i);
+		init_philo(table, i);
 	return (0);
 }

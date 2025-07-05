@@ -48,8 +48,6 @@ int	create_threads(t_table *table)
 	i = -1;
 	while (++i < table->num_of_phil)
 	{
-		if (i % 2 == 0)
-			usleep(1000);
 		if (create_thread(table, i))
 			return (1);
 	}
@@ -59,7 +57,6 @@ int	create_threads(t_table *table)
 		if (table->ready_count == table->num_of_phil)
 		{
 			pthread_mutex_unlock(&table->start_lock);
-			set_t_start(table);
 			pthread_mutex_lock(&table->start_lock);
 			table->start = 1;
 			pthread_mutex_unlock(&table->start_lock);

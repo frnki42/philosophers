@@ -18,7 +18,7 @@ void	precision_timer(long duration)
 
 	time = check_time();
 	while ((check_time() - time) < duration)
-		usleep(100);
+		usleep(500);
 }
 
 // philos 9-5
@@ -27,6 +27,7 @@ void	*start_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+
 	pthread_mutex_lock(&philo->table->start_lock);
 	philo->table->ready_count++;
 	pthread_mutex_unlock(&philo->table->start_lock);
@@ -35,16 +36,20 @@ void	*start_routine(void *arg)
 		pthread_mutex_lock(&philo->table->start_lock);
 		if (philo->table->start)
 		{
+			printf("Philosopher %u is ready to start\n", philo->num);
 			pthread_mutex_unlock(&philo->table->start_lock);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->start_lock);
 		usleep(100);
 	}
+	pthread_mutex_lock(&philo->meal_lock);
+	philo->t_last = check_time();
+	pthread_mutex_unlock(&philo->meal_lock);
 	while (1)
 	{
-		if (philo->num % 2 == 0)
-			usleep(420);
+		if (philo->num % 2)
+			usleep(1000);
 		pthread_mutex_lock(&philo->table->alive_lock);
 		if (!philo->table->all_alive)
 		{
@@ -52,7 +57,7 @@ void	*start_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->alive_lock);
-		if (!pick_up_forks(philo))
+		if (pick_up_forks(philo))
 			break ;
 		pthread_mutex_lock(&philo->meal_lock);
 		philo->t_last = check_time();
@@ -70,7 +75,7 @@ void	*start_routine(void *arg)
 		print_status(philo, "is sleeping");
 		precision_timer(philo->table->t_sleep);
 		print_status(philo, "is thinking");
-		usleep(3000);
+		usleep(1000);
 	}
 	return (NULL);
 }

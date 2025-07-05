@@ -20,7 +20,7 @@ static int	run_all(t_table *table)
 		solo_adventure(&table->philos[0]);
 		return (0);
 	}
-	if (create_threads(table))
+	if (set_t_start(table) || create_threads(table))
 		return (1);
 	return (0);
 }
