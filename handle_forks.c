@@ -52,7 +52,8 @@ int	pick_up_forks(t_philo *philo)
 {
 	if (philo->num % 2)
 		return (pick_left_first(philo));
-	return (pick_right_first(philo));
+	else
+		return (pick_right_first(philo));
 }
 
 // put forks down

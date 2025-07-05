@@ -18,7 +18,7 @@ void	precision_timer(long duration)
 
 	time = check_time();
 	while ((check_time() - time) < duration)
-		usleep(500);
+		usleep(100);
 }
 
 // philos 9-5
@@ -27,7 +27,6 @@ void	*start_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-
 	pthread_mutex_lock(&philo->table->start_lock);
 	philo->table->ready_count++;
 	pthread_mutex_unlock(&philo->table->start_lock);
@@ -36,7 +35,6 @@ void	*start_routine(void *arg)
 		pthread_mutex_lock(&philo->table->start_lock);
 		if (philo->table->start)
 		{
-			printf("Philosopher %u is ready to start\n", philo->num);
 			pthread_mutex_unlock(&philo->table->start_lock);
 			break ;
 		}

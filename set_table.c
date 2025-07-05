@@ -14,9 +14,14 @@
 // starts the stopwatch
 int	set_t_start(t_table *table)
 {
+	unsigned int	i;
+
 	table->t_start = check_time();
 	if (table->t_start == -1)
 		return (1);
+	i = 0;
+	while (i < table->num_of_phil)
+		table->philos[i++].t_last = table->t_start;
 	return (0);
 }
 

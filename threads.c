@@ -73,7 +73,7 @@ int	create_threads(t_table *table)
 		join_threads(table);
 		return (1);
 	}
-	join_threads(table);
 	pthread_detach(monitor_thread);
+	join_threads(table);
 	return (0);
 }
