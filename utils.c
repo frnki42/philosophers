@@ -11,6 +11,16 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+// pew pew pew
+void	precision_timer(long duration)
+{
+	long	time;
+
+	time = check_time();
+	while ((check_time() - time) < duration)
+		usleep(100);
+}
+
 // prints time + message and handles msg_lock
 void	print_status(t_philo *philo, char *msg)
 {
